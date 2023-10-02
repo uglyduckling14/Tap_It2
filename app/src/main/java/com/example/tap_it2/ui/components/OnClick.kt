@@ -1,6 +1,8 @@
-package com.example.tap_it
+package com.example.tap_it2.ui.components
 
 import androidx.compose.ui.graphics.Color
+import com.example.tap_it.Check
+import com.example.tap_it.generateRandomColor
 
 class OnClick(
     var restart: Boolean,
