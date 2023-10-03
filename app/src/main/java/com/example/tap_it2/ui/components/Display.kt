@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,12 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.tap_it2.ui.components.OnClick
 
 
 //Page of game
 @Composable
-fun Display(levelsList: MutableMap<Int, Color>){
+fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
     //level of game
     var levels = levelsList
     if(levels.size<2){
@@ -133,13 +135,11 @@ fun Display(levelsList: MutableMap<Int, Color>){
         if(restart){
             Text(text="You Lost! You reached level: $level")
             Button(onClick = {
-                current = 1
-                level = 1
-                selectedColor = Color.White
-                levels.clear()
-                restart = false
-            }) {
-                Text(text ="Restart?")
+                navController.navigate("home")
+            },
+                colors = ButtonDefaults.buttonColors( containerColor = generateRandomColor(), contentColor = Color.White)
+            ) {
+                Text(text ="Back to Main Screen")
             }
 
         }

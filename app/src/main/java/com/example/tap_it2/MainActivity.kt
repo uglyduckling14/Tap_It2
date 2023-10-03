@@ -19,21 +19,3 @@ import com.example.tap_it2.App
         }
     }
 }
-
-
-@Composable
-fun MainScreen(){
-    //create list of all level colors
-    val levels = mutableMapOf(
-        1 to generateRandomColor(),
-        2 to generateRandomColor()
-        )
-    Display(levels)
-}
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Tap_ItTheme {
-        MainScreen()
-    }
-}
