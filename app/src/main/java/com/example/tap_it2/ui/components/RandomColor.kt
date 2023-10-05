@@ -4,8 +4,6 @@ import android.graphics.Color.BLUE
 import android.graphics.Color.GREEN
 import android.graphics.Color.RED
 import android.graphics.Color.YELLOW
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import kotlin.random.Random
 
 

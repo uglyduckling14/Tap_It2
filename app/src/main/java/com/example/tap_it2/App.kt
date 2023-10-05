@@ -7,8 +7,6 @@ import com.example.tap_it2.ui.navigation.RootNavigation
 @Composable
 fun App(){
     Tap_ItTheme {
-        // A surface container using the 'background' color from the theme
-        //MainScreen()
         RootNavigation()
     }
 }

@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.example.tap_it.generateRandomColor
 
 class HomeUiState{
     var highScore by mutableIntStateOf(0)
