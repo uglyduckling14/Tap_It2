@@ -18,14 +18,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tap_it2.ui.viewmodels.GameUiState
 import com.example.tap_it2.ui.viewmodels.GameViewModel
 
 
@@ -41,8 +39,8 @@ fun Display(navController:NavController){
         viewModel.load()
     }
     
-    var colors1 = listOf(RED, YELLOW)
-    var colors2 = listOf(BLUE, GREEN)
+    val colors1 = listOf(RED, YELLOW)
+    val colors2 = listOf(BLUE, GREEN)
 
     //what color in the list of pattern the user is on
     Column(
@@ -141,7 +139,7 @@ fun Display(navController:NavController){
 
 @Composable
 fun CreatePrompt(levels: Map<Int,Int>, level: Int){
-    levels[level]?.let { Prompt(it) };
+    levels[level]?.let { Prompt(it) }
 }
 
 //What color to pick
@@ -153,13 +151,5 @@ fun Prompt(color: Int){
             .fillMaxSize()
             .background(intToColor)
     ){
-    }
-}
-
-
-@Composable
-fun rememberGameUiState(): GameUiState{
-    return remember {
-        GameUiState()
     }
 }
