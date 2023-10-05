@@ -12,6 +12,6 @@ fun RootNavigation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home"){
         composable(Routes.Home.route){HomeScreen(navController = navController)}
-        composable(Routes.Game.route){ GameScreen(navController = navController)}
+        composable(Routes.Game.route){GameScreen(navController = navController)}
     }
 }

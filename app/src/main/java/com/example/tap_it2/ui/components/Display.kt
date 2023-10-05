@@ -1,5 +1,9 @@
 package com.example.tap_it
 
+import android.graphics.Color.BLUE
+import android.graphics.Color.GREEN
+import android.graphics.Color.RED
+import android.graphics.Color.YELLOW
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,42 +17,34 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tap_it2.ui.components.OnClick
+import com.example.tap_it2.ui.viewmodels.GameUiState
+import com.example.tap_it2.ui.viewmodels.GameViewModel
+
 
 
 //Page of game
 @Composable
-fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
+fun Display(navController:NavController){
     //level of game
-    var levels = levelsList
-    if(levels.size<2){
-        levels[1] = generateRandomColor()
-        levels[2] = generateRandomColor()
+    val viewModel: GameViewModel = viewModel()
+    val state = viewModel._uiState
+    LaunchedEffect(true){
+        viewModel.reset()
+        viewModel.load()
     }
-    var colors1 = listOf(Color.Red, Color.Yellow)
-    var colors2 = listOf(Color.Blue, Color.Green)
-    var level by remember {
-        mutableStateOf(1)
-    }
+    
+    var colors1 = listOf(RED, YELLOW)
+    var colors2 = listOf(BLUE, GREEN)
+
     //what color in the list of pattern the user is on
-    var current by remember {
-        mutableStateOf(1)
-    }
-    var selectedColor by remember {
-        mutableStateOf(Color.White)
-    }
-    var restart by remember {
-        mutableStateOf(false)
-    }
     Column(
         modifier = Modifier
             .background(Color.White),
@@ -59,7 +55,7 @@ fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
             .weight(0.25f),
             contentAlignment = Alignment.Center)
         {
-            Text(text = "Level $level")
+            Text(text = "Level ${state.level}")
         }
         Box(
             modifier = Modifier
@@ -68,7 +64,7 @@ fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
                 .padding(12.dp),
             contentAlignment = Alignment.Center
         ) {
-            CreatePrompt(levels, level)
+            CreatePrompt(state.levels, state.level)
         }
 
         Box(
@@ -91,17 +87,15 @@ fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color)
+                                .background(Color(color))
                                 .weight(1f)
                                 .clickable {
-                                    selectedColor = color
-                                    val onClick = OnClick(restart, current, selectedColor, levels, level)
-                                    onClick.onClick()
-                                    levels= onClick.levels
-                                    current=onClick.current
-                                    level=onClick.level
-                                    restart = onClick.restart
-                                    println(level)
+                                    viewModel.setInt("selectedColor", color)
+                                    viewModel.setInt("level", state.level)
+                                    viewModel.setInt("current", state.current)
+                                    viewModel.setBoolean("restart", state.restart)
+                                    viewModel.onClick()
+                                    println("level ${state.highScore}")
                                 }
                             ){}
                         }
@@ -115,29 +109,28 @@ fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color)
+                                .background(Color(color))
                                 .weight(1f)
                                 .clickable {
-                                    selectedColor = color
-                                    val onClick = OnClick(restart, current, selectedColor, levels, level)
-                                    onClick.onClick()
-                                    levels= onClick.levels
-                                    current=onClick.current
-                                    level=onClick.level
-                                    restart = onClick.restart
-                                    println(level)
+                                    viewModel.setInt("selectedColor", color)
+                                    viewModel.setInt("level", state.level)
+                                    viewModel.setInt("current", state.current)
+                                    viewModel.setBoolean("restart", state.restart)
+                                    viewModel.onClick()
+                                    println("level ${state.level}")
                                 }
                         ) {}
                     }
                 }
             }
         }
-        if(restart){
-            Text(text="You Lost! You reached level: $level")
+        if(state.restart){
+            Text(text="You Lost! You reached level: ${state.level}")
             Button(onClick = {
+                viewModel.reset()
                 navController.navigate("home")
             },
-                colors = ButtonDefaults.buttonColors( containerColor = generateRandomColor(), contentColor = Color.White)
+                colors = ButtonDefaults.buttonColors( containerColor = Color.Red, contentColor = Color.White)
             ) {
                 Text(text ="Back to Main Screen")
             }
@@ -147,22 +140,26 @@ fun Display(levelsList: MutableMap<Int, Color>, navController:NavController){
 }
 
 @Composable
-fun CreatePrompt(levels: Map<Int,Color>, level: Int){
+fun CreatePrompt(levels: Map<Int,Int>, level: Int){
     levels[level]?.let { Prompt(it) };
 }
 
-//Compares the colors the user has selected so far to the level colors
-fun Check(selected: Color, levels: Map<Int,Color>, current: Int): Boolean {
-    return selected == levels[current]
-}
 //What color to pick
 @Composable
-fun Prompt(color: Color){
+fun Prompt(color: Int){
+    val intToColor = Color(color)
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color)
+            .background(intToColor)
     ){
+    }
+}
 
+
+@Composable
+fun rememberGameUiState(): GameUiState{
+    return remember {
+        GameUiState()
     }
 }

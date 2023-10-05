@@ -8,16 +8,22 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tap_it.generateRandomColor
-
+import com.example.tap_it2.ui.viewmodels.HomeViewModel
 
 @Composable
 fun HomeScreen(navController: NavController){
+    val viewModel: HomeViewModel = viewModel()
+    LaunchedEffect(true){
+        viewModel.load()
+    }
+    val state = viewModel._uiState
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -25,13 +31,13 @@ fun HomeScreen(navController: NavController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "High Score: ")
+        Text(text = "High Score: ${state.highScore}")
         // Create a button that navigates to "game" on click
         Button(
             onClick = {
                 navController.navigate("game")
             },
-            colors = ButtonDefaults.buttonColors( containerColor = generateRandomColor(), contentColor = Color.White)
+            colors = ButtonDefaults.buttonColors( containerColor = Color.Red, contentColor = Color.White)
         ) {
             Text("Start Game!")
         }

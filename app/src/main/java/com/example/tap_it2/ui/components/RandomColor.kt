@@ -1,18 +1,22 @@
 package com.example.tap_it
 
+import android.graphics.Color.BLUE
+import android.graphics.Color.GREEN
+import android.graphics.Color.RED
+import android.graphics.Color.YELLOW
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import kotlin.random.Random
 
 
-fun generateRandomColor(): Color {
+fun generateRandomColor(): Int {
     val random = Random.Default
 
     val allowedColors = arrayOf(
-        Color.Red,
-        Color.Green,
-        Color.Blue,
-        Color.Yellow
+        RED,
+        GREEN,
+        BLUE,
+        YELLOW
     )
 
     val randomIndex = random.nextInt(allowedColors.size)
